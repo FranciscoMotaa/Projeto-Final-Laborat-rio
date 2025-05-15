@@ -35,6 +35,11 @@ export default function App() {
             headerBackVisible: false
           }}
         />
+        <Stack.Screen
+          name="Battery"
+          component={BatteryScreen}
+          options={{ title: 'Estado da Bateria' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
