@@ -15,7 +15,7 @@ export default function LoginScreen({ navigation }) {
 
   const onLogin = () => {
     // TODO: lógica de autenticação
-    navigation.replace('Home')
+    navigation.replace('MainDrawer')
   };
 
   return (
