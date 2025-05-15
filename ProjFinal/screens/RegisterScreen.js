@@ -16,6 +16,7 @@ export default function RegisterScreen({ navigation }) {
 
   const onRegister = () => {
     // TODO: lógica de registo
+    navigation.replace('Home')
   }
 
   return (
