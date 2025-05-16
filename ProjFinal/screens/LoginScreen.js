@@ -13,10 +13,28 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onLogin = () => {
-    // TODO: lógica de autenticação
-    navigation.replace('MainDrawer')
-  };
+  const onLogin = async () => {
+  if (!email || !password) {
+    alert('Preencha todos os campos!');
+    return;
+  }
+  try {
+    const response = await fetch('http://192.168.1.191:3000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      navigation.replace('MainDrawer');
+    } else {
+      alert(data.message || 'Erro ao fazer login');
+    }
+  } catch (error) {
+    alert('Erro de rede. Tente novamente mais tarde.');
+    console.error('Erro ao fazer login:', error);
+  }
+};
 
   return (
     <SafeAreaView style={styles.screen}>
