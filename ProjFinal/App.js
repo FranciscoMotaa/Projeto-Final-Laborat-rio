@@ -211,17 +211,12 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
-          options={{ title: 'Criar Conta', headerBackVisible: true }}
+          options={{ title: 'Criar Conta', headerBackVisible: false }}
         />
         <Stack.Screen
           name="MainDrawer"
           component={MainDrawer}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Battery"
-          component={BatteryScreen}
-          options={{ title: 'Estado da Bateria' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

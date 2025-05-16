@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
+    
     color: '#2e7d32',
     fontWeight: '600'
   }

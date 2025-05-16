@@ -14,10 +14,40 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
 
-  const onRegister = () => {
-    // TODO: lógica de registo
-    navigation.replace('Home')
-  }
+    const onRegister = async () => {
+    if (!email || !password || !confirm) {
+      alert('Preencha todos os campos!');
+      return;
+    }
+
+    if (password !== confirm) {
+      alert('As senhas não coincidem!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://10.122.47.219:3000/registar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Utilizador registrado com sucesso!');
+        navigation.replace('Login');
+      } else {
+        alert(data.message || 'Erro ao registrar utilizador');
+      }
+    } catch (error) {
+      alert('Erro de rede. Tente novamente mais tarde.');
+      console.error('Erro ao registrar utilizador:', error);
+    }
+  };
+
 
   return (
     <SafeAreaView style={styles.screen}>
