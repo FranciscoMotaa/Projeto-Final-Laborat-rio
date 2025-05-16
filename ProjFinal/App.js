@@ -211,7 +211,7 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
-          options={{ title: 'Criar Conta', headerBackVisible: true }}
+          options={{ title: 'Criar Conta', headerBackVisible: false }}
         />
         <Stack.Screen
           name="MainDrawer"
