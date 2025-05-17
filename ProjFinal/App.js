@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import HomeScreen from './screens/HomeScreen'
-import DefinicoesScreen from './screens/ManutencaoScreen'
+import DefinicoesScreen from './screens/DefinicoesScreen'
 import AnaliseScreen from './screens/AnaliseScreen'
 import BateriaScreen from './screens/BateriaScreen'
 import CarregamentoScreen from './screens/CarregamentoScreen'
@@ -30,6 +30,7 @@ export default function App() {
         screenOptions={({ navigation }) => ({
           headerTintColor: '#fff',
           headerStyle: { backgroundColor: '#2e7d32' },
+          headerBackVisible: false,              // <-- remove o botão de voltar
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.replace('Login')}
@@ -45,8 +46,8 @@ export default function App() {
           component={LoginScreen}
           options={{
             title: 'Agenda A-MoVeR',
-            headerBackVisible: false,
-            headerRight: () => null         // oculta o botão de sair
+            headerBackVisible: false,             // opcional, já herdado
+            headerRight: () => null
           }}
         />
         <Stack.Screen
