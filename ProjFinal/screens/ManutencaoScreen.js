@@ -3,20 +3,15 @@ import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-na
 import { Ionicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-export default function ManutencaoScreen({ navigation }) {
+export default function DefinicoeScreen({ navigation }) {
   const menuItems = [
-    { name: 'Bateria',    icon: 'battery-charging-outline' },
-    { name: 'Localização',icon: 'location-outline' },
-    { name: 'Manutenção', icon: 'construct-outline' },
-    { name: 'Histórico',  icon: 'time-outline' },
-    { name: 'Diagnóstico',icon: 'medkit-outline' },
-    { name: 'Carregamento',icon:'flash-outline' },
-    { name: 'Controlo',   icon: 'game-controller-outline' },
-    { name: 'Ajustes',    icon: 'settings-outline' },
-    { name: 'Rotas',      icon: 'map-outline' },
-    { name: 'Clima',      icon: 'sunny-outline' },
-    { name: 'Análise',    icon: 'analytics-outline' },
-    { name: 'Comunidade', icon: 'people-outline' }
+    { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
+    { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },
+    { name: 'Navegação',  icon: 'navigate-outline',          route: 'Navegação' },
+    { name: 'Controlo',    icon: 'game-controller-outline', route: 'Controlo' },
+    { name: 'Manutenção',  icon: 'construct-outline', route: 'Manutenção' },
+    { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
+    { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
   ]
 
   const [showPicker, setShowPicker] = useState(false)
@@ -36,7 +31,7 @@ export default function ManutencaoScreen({ navigation }) {
             <TouchableOpacity
               key={item.name}
               style={styles.cell}
-              onPress={() => navigation.navigate(item.name)}
+              onPress={() => navigation.navigate(item.route)}
             >
               <Ionicons name={item.icon} size={32} color="#2e7d32" />
               <Text style={styles.label}>{item.name}</Text>
@@ -44,6 +39,37 @@ export default function ManutencaoScreen({ navigation }) {
           ))}
         </View>
       </View>
+      <View style={styles.submenuContainer}>
+              <TouchableOpacity
+                style={styles.submenuButton}
+                onPress={() => navigation.navigate('Manutenção')}
+              >
+                <Ionicons name="construct-outline" size={24} color="#2e7d32" />
+                <Text style={styles.submenuLabel}>Manutenção</Text>
+              </TouchableOpacity>
+                      
+              <TouchableOpacity
+                style={styles.submenuButton}
+                onPress={() => navigation.navigate('Histórico')}
+              >
+                <Ionicons name="time-outline" size={24} color="#2e7d32" />
+                <Text style={styles.submenuLabel}>Histórico</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.submenuButton}
+                onPress={() => navigation.navigate('Diagnóstico')}
+              >
+                <Ionicons name="medkit-outline" size={24} color="#2e7d32" />
+                <Text style={styles.submenuLabel}>Diagnóstico</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.submenuButton}
+                onPress={() => navigation.navigate('Análise')}
+              >
+                <Ionicons name="analytics-outline" size={24} color="#2e7d32" />
+                <Text style={styles.submenuLabel}>Análise</Text>
+              </TouchableOpacity>
+            </View>
 
       {/* Cartão Estado de Manutenção */}
       <View style={styles.card}>
@@ -123,12 +149,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cell: {
-    width: '28%',
-    backgroundColor: '#fff',
+    width: '31%',
+    height: 60,
+    backgroundColor: '#fff',  // botão branco
     margin: 4,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    // botão com sombra leve
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -141,6 +169,33 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#2e7d32',
     textAlign: 'center'
+  },
+  submenuContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',               // permite quebra de linha
+    justifyContent: 'space-between',
+    paddingHorizontal: 12
+  },
+  submenuButton: {
+    width: '48%',                   // duas colunas de ~48%
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    marginBottom: 8,                // espaço entre as linhas
+    borderRadius: 6,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2
+  },
+  submenuLabel: {
+    color: '#2e7d32',
+    marginLeft: 8,
+    fontSize: 14,
+    fontWeight: '600'
   },
   card: {
     backgroundColor: '#fff', // <-- cartão claro

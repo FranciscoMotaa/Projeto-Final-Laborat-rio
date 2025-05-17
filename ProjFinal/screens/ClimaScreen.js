@@ -2,20 +2,15 @@ import React from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-export default function ClimaScreen({ navigation }) {
+export default function ComunidadeScreen({ navigation }) {
   const menuItems = [
-    { name: 'Bateria',    icon: 'battery-charging-outline' },
-    { name: 'Localização',icon: 'location-outline' },
-    { name: 'Manutenção', icon: 'construct-outline' },
-    { name: 'Histórico',  icon: 'time-outline' },
-    { name: 'Diagnóstico',icon: 'medkit-outline' },
-    { name: 'Carregamento',icon:'flash-outline' },
-    { name: 'Controlo',   icon: 'game-controller-outline' },
-    { name: 'Ajustes',    icon: 'settings-outline' },
-    { name: 'Rotas',      icon: 'map-outline' },
-    { name: 'Clima',      icon: 'sunny-outline' },
-    { name: 'Análise',    icon: 'analytics-outline' },
-    { name: 'Comunidade', icon: 'people-outline' }
+    { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
+    { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },
+    { name: 'Navegação',  icon: 'navigate-outline',          route: 'Navegação' },
+    { name: 'Controlo',    icon: 'game-controller-outline', route: 'Controlo' },
+    { name: 'Manutenção',  icon: 'construct-outline', route: 'Manutenção' },
+    { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
+    { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
   ]
 
   return (
@@ -27,13 +22,37 @@ export default function ClimaScreen({ navigation }) {
             <TouchableOpacity
               key={item.name}
               style={styles.cell}
-              onPress={() => navigation.navigate(item.name)}
+              onPress={() => navigation.navigate(item.route)}
             >
               <Ionicons name={item.icon} size={32} color="#2e7d32" />
               <Text style={styles.label}>{item.name}</Text>
             </TouchableOpacity>
           ))}
         </View>
+      </View>
+      <View style={styles.submenuContainer}>
+        <TouchableOpacity
+          style={styles.submenuButton}
+          onPress={() => navigation.navigate('Localização')}
+        >
+          <Ionicons name="location-outline" size={24} color="#2e7d32" />
+          <Text style={styles.submenuLabel}>Localização</Text>
+        </TouchableOpacity>
+                
+        <TouchableOpacity
+          style={styles.submenuButton}
+          onPress={() => navigation.navigate('Rotas')}
+        >
+          <Ionicons name="map-outline" size={24} color="#2e7d32" />
+          <Text style={styles.submenuLabel}>Rotas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.submenuButton}
+          onPress={() => navigation.navigate('Clima')}
+        >
+          <Ionicons name="sunny-outline" size={24} color="#2e7d32" />
+          <Text style={styles.submenuLabel}>Clima</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   )
@@ -64,7 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cell: {
-    width: '28%',
+    width: '31%',
+    height: 60,
     backgroundColor: '#fff',  // botão branco
     margin: 4,
     borderRadius: 8,
@@ -83,5 +103,31 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#2e7d32',
     textAlign: 'center'
+  },
+  submenuContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 12
+  },
+  submenuButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    marginHorizontal: 4,
+    borderRadius: 6,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2
+  },
+  submenuLabel: {
+    color: '#2e7d32',
+    marginLeft: 8,
+    fontSize: 14,
+    fontWeight: '600'
   }
 })

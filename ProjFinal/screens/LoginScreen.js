@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
     });
     const data = await response.json();
     if (response.ok) {
-      navigation.replace('MainDrawer');
+      navigation.replace('Home');
     } else {
       alert(data.message || 'Erro ao fazer login');
     }
