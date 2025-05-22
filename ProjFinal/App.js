@@ -18,7 +18,9 @@ import HistoricoScreen from './screens/HistoricoScreen'
 import LocalizacaoScreen from './screens/LocalizacaoScreen'
 import ManutencaoScreen from './screens/ManutencaoScreen'
 import RotasScreen from './screens/RotasScreen'
+import DetalhesRotaScreen from './screens/DetalhesRotaScreen'
 import NavegacaoScreen from './screens/NavegacaoScreen'
+import NavegacaoGPSScreen from './screens/NavegacaoGPSScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -58,7 +60,7 @@ export default function App() {
             headerBackVisible: false,
             headerRight: () => null         // oculta o botão de sair
           }}
-        />
+        />        
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
         <Stack.Screen name="Bateria" component={BateriaScreen} />
         <Stack.Screen name="Localização" component={LocalizacaoScreen} />
@@ -68,7 +70,16 @@ export default function App() {
         <Stack.Screen name="Carregamento" component={CarregamentoScreen} />
         <Stack.Screen name="Controlo" component={ControloScreen} />
         <Stack.Screen name="Definições" component={DefinicoesScreen} />
-        <Stack.Screen name="Rotas" component={RotasScreen} />
+        <Stack.Screen name="Rotas" component={RotasScreen} />        
+        <Stack.Screen name="DetalhesRota" component={DetalhesRotaScreen} options={{ title: 'Detalhes da Rota' }} />
+        <Stack.Screen 
+          name="NavegacaoGPS" 
+          component={NavegacaoGPSScreen} 
+          options={{ 
+            title: 'Navegação GPS',
+            headerShown: false // Ocultamos o cabeçalho para ter a experiência de tela cheia
+          }} 
+        />
         <Stack.Screen name="Clima" component={ClimaScreen} />
         <Stack.Screen name="Análise" component={AnaliseScreen} />
         <Stack.Screen name="Comunidade" component={ComunidadeScreen} />
