@@ -20,10 +20,10 @@ import * as Location from "expo-location";
 import { buscarRota, buscarSugestoesLocais } from "../services/routeService";
 import { useTheme } from "../context/ThemeContext";
 
-export default function RotasScreen({ navigation }) {
+export default function RotasScreen({ navigation, route }) {
   const { palette } = useTheme();
   const [origem, setOrigem] = useState("");
-  const [destino, setDestino] = useState("");
+  const [destino, setDestino] = useState(route?.params?.destino || ""); // <-- aqui
   const [carregando, setCarregando] = useState(false);
   const [sugestoesOrigem, setSugestoesOrigem] = useState([]);
   const [sugestoesDestino, setSugestoesDestino] = useState([]);
