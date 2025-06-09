@@ -1,6 +1,7 @@
 import React from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function ComunidadeScreen({ navigation }) {
   const menuItems = [
@@ -10,7 +11,7 @@ export default function ComunidadeScreen({ navigation }) {
     { name: 'Controlo',    icon: 'game-controller-outline', route: 'Controlo' },
     { name: 'Manutenção',  icon: 'construct-outline', route: 'Manutenção' },
     { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
-    { name: 'AjuDefiniçõesstes',     icon: 'settings-outline', route: 'Definições' },
+    { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
   ]
   return (
     <SafeAreaView style={styles.container}>

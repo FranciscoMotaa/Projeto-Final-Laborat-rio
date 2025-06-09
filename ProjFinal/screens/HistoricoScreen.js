@@ -1,6 +1,7 @@
 import React from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function ComunidadeScreen({ navigation }) {
   const menuItems = [

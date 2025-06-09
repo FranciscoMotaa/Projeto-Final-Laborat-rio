@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { SafeAreaView, ActivityIndicator } from 'react-native'
+import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function NavegacaoScreen({ navigation }) {
   useEffect(() => {

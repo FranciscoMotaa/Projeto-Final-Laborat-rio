@@ -1,31 +1,44 @@
-import React from 'react'
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import React from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../context/ThemeContext"; // Caminho atualizado
 
-export default function ComunidadeScreen({ navigation }) {
+export default function RotasScreen({ navigation }) {
+  const { palette } = useTheme();
+
   const menuItems = [
-    { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
-    { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },
-    { name: 'Navegação',  icon: 'navigate-outline',          route: 'Navegação' },
-    { name: 'Controlo',    icon: 'game-controller-outline', route: 'Controlo' },
-    { name: 'Manutenção',  icon: 'construct-outline', route: 'Manutenção' },
-    { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
-    { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
-  ]
+    { name: "Início", icon: "home-outline", route: "Home" },
+    { name: "Bateria", icon: "battery-charging-outline", route: "Bateria" },
+    { name: "Navegação", icon: "navigate-outline", route: "Navegação" },
+    { name: "Controlo", icon: "game-controller-outline", route: "Controlo" },
+    { name: "Manutenção", icon: "construct-outline", route: "Manutenção" },
+    { name: "Comunidade", icon: "people-outline", route: "Comunidade" },
+    { name: "Definições", icon: "settings-outline", route: "Definições" },
+  ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: palette.background }]}
+    >
       {/* container branco atrás dos botões */}
-      <View style={styles.menuContainer}>
+      <View style={[styles.menuContainer, { backgroundColor: palette.card }]}>
         <View style={styles.grid}>
-          {menuItems.map(item => (
+          {menuItems.map((item) => (
             <TouchableOpacity
               key={item.name}
-              style={styles.cell}
+              style={[styles.cell, { backgroundColor: palette.card }]}
               onPress={() => navigation.navigate(item.route)}
             >
-              <Ionicons name={item.icon} size={32} color="#2e7d32" />
-              <Text style={styles.label}>{item.name}</Text>
+              <Ionicons name={item.icon} size={32} color={palette.primary} />
+              <Text style={[styles.label, { color: palette.primary }]}>
+                {item.name}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -33,101 +46,100 @@ export default function ComunidadeScreen({ navigation }) {
       <View style={styles.submenuContainer}>
         <TouchableOpacity
           style={styles.submenuButton}
-          onPress={() => navigation.navigate('Localização')}
+          onPress={() => navigation.navigate("Localização")}
         >
-          <Ionicons name="location-outline" size={24} color="#2e7d32" />
+          <Ionicons name="location-outline" size={24} color={palette.primary} />
           <Text style={styles.submenuLabel}>Localização</Text>
         </TouchableOpacity>
-                
         <TouchableOpacity
           style={styles.submenuButton}
-          onPress={() => navigation.navigate('Rotas')}
+          onPress={() => navigation.navigate("Rotas")}
         >
-          <Ionicons name="map-outline" size={24} color="#2e7d32" />
+          <Ionicons name="map-outline" size={24} color={palette.primary} />
           <Text style={styles.submenuLabel}>Rotas</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.submenuButton}
-          onPress={() => navigation.navigate('Clima')}
+          onPress={() => navigation.navigate("Clima")}
         >
-          <Ionicons name="sunny-outline" size={24} color="#2e7d32" />
+          <Ionicons name="sunny-outline" size={24} color={palette.primary} />
           <Text style={styles.submenuLabel}>Clima</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f4f7'
+    backgroundColor: "#f0f4f7",
   },
   menuContainer: {
     margin: 12,
-    padding:8,
-    backgroundColor: '#fff',
+    padding: 8,
+    backgroundColor: "#fff",
     borderRadius: 8,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     // sombra Android
     elevation: 3,
     // sombra iOS
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4
+    shadowRadius: 4,
   },
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   cell: {
-    width: '31%',
+    width: "31%",
     height: 60,
-    backgroundColor: '#fff',  // botão branco
+    backgroundColor: "#fff", // botão branco
     margin: 4,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     // botão com sombra leve
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
-    shadowRadius: 2
+    shadowRadius: 2,
   },
   label: {
     marginTop: 6,
     fontSize: 12,
-    fontWeight: '600',
-    color: '#2e7d32',
-    textAlign: 'center'
+    fontWeight: "600",
+    color: "#2e7d32",
+    textAlign: "center",
   },
   submenuContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 12
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingHorizontal: 12,
   },
   submenuButton: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
     paddingVertical: 10,
     marginHorizontal: 4,
     borderRadius: 6,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
-    shadowRadius: 2
+    shadowRadius: 2,
   },
   submenuLabel: {
-    color: '#2e7d32',
+    color: "#2e7d32",
     marginLeft: 8,
     fontSize: 14,
-    fontWeight: '600'
-  }
-})
+    fontWeight: "600",
+  },
+});

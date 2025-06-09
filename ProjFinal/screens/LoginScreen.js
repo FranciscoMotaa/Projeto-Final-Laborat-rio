@@ -1,40 +1,40 @@
 // filepath: ProjFinal/screens/LoginScreen.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet
-} from 'react-native';
+  StyleSheet,
+} from "react-native";
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onLogin = async () => {
-  if (!email || !password) {
-    alert('Preencha todos os campos!');
-    return;
-  }
-  try {
-    const response = await fetch('http://192.168.1.173:3000/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await response.json();
-    if (response.ok) {
-      navigation.replace('Home');
-    } else {
-      alert(data.message || 'Erro ao fazer login');
+    if (!email || !password) {
+      alert("Preencha todos os campos!");
+      return;
     }
-  } catch (error) {
-    alert('Erro de rede. Tente novamente mais tarde.');
-    console.error('Erro ao fazer login:', error);
-  }
-};
+    try {
+      const response = await fetch("http://192.168.1.191:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        navigation.replace("Home");
+      } else {
+        alert(data.message || "Erro ao fazer login");
+      }
+    } catch (error) {
+      alert("Erro de rede. Tente novamente mais tarde.");
+      console.error("Erro ao fazer login:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -60,10 +60,16 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate("Register")}
           style={styles.linkContainer}
         >
           <Text style={styles.linkText}>Criar conta</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ForgotPassword")} // Navega para a tela de recuperação de senha
+          style={styles.linkContainer}
+        >
+          <Text style={styles.linkText}>Esqueceu a palavra-passe?</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -71,9 +77,9 @@ export default function LoginScreen({ navigation }) {
 }
 
 export function RegisterScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
 
   const onRegister = () => {
     // TODO: lógica de registo
@@ -103,7 +109,7 @@ export function RegisterScreen({ navigation }) {
         value={confirm}
         onChangeText={setConfirm}
       />
-      <Button title="Registar" color="#388e3c" onPress={onRegister}/>
+      <Button title="Registar" color="#388e3c" onPress={onRegister} />
       <Text style={styles.link} onPress={() => navigation.goBack()}>
         Já tem conta? Entrar
       </Text>
@@ -114,67 +120,67 @@ export function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#f0f4f7',
-    justifyContent: 'center',
-    padding: 16
+    backgroundColor: "#f0f4f7",
+    justifyContent: "center",
+    padding: 16,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     padding: 24,
     // sombra iOS
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     // elevação Android
-    elevation: 4
+    elevation: 4,
   },
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#e8f5e9'
+    justifyContent: "center",
+    backgroundColor: "#e8f5e9",
   },
   title: {
     fontSize: 28,
-    fontWeight: '700',
-    color: '#2e7d32',
+    fontWeight: "700",
+    color: "#2e7d32",
     marginBottom: 24,
-    textAlign: 'center'
+    textAlign: "center",
   },
   input: {
     height: 50,
-    backgroundColor: '#f7f9fa',
+    backgroundColor: "#f7f9fa",
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
-    fontSize: 16
+    fontSize: 16,
   },
   button: {
-    backgroundColor: '#2e7d32',
+    backgroundColor: "#2e7d32",
     borderRadius: 8,
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: "600",
   },
   linkContainer: {
     marginTop: 16,
-    alignItems: 'center'
+    alignItems: "center",
   },
   linkText: {
-    color: '#388e3c',
-    fontSize: 14
+    color: "#388e3c",
+    fontSize: 14,
   },
   link: {
     marginTop: 15,
-    color: '#2e7d32',
-    textAlign: 'center'
-  }
+    color: "#2e7d32",
+    textAlign: "center",
+  },
 });

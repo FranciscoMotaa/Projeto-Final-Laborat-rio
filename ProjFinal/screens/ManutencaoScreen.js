@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function DefinicoeScreen({ navigation }) {
   const menuItems = [
