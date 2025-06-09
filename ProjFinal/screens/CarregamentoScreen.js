@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeContext";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
+import * as Location from "expo-location";
+import axios from "axios";
 
 export default function CarregamentoScreen({ navigation }) {
   const { palette } = useTheme();
@@ -27,42 +29,47 @@ export default function CarregamentoScreen({ navigation }) {
   // Estado para as estações
   const [stations, setStations] = useState([]);
   const [showMap, setShowMap] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
-  // Mock de dados (pode trocar por fetch futuramente)
   useEffect(() => {
-    setStations([
-      {
-        id: 1,
-        nome: "Posto de Carregamento Central",
-        endereco: "Av. da República, 25",
-        detalhes: "12 km 22 kW 0.35€/kWh",
-        disponiveis: "3/4 Disponíveis",
-        rating: 4.5,
-        status: "available",
-        destaque: true,
-      },
-      {
-        id: 2,
-        nome: "Estação Shopping",
-        endereco: "Centro Comercial Colombo",
-        detalhes: "3.5 km 50 kW 0.42€/kWh",
-        disponiveis: "1/6 Disponíveis",
-        rating: 4.2,
-        status: "low",
-        destaque: false,
-      },
-      {
-        id: 3,
-        nome: "Parque Estacionamento Norte",
-        endereco: "Rua do Norte, 78",
-        detalhes: "4.8 km 11 kW 0.30€/kWh",
-        disponiveis: "Ocupado",
-        rating: 3.8,
-        status: "occupied",
-        destaque: false,
-      },
-    ]);
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setUserLocation({
+          latitude: 38.736946,
+          longitude: -9.142685,
+        });
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    })();
   }, []);
+
+  useEffect(() => {
+    if (!userLocation) return;
+    const fetchStations = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.openchargemap.io/v3/poi/?output=json&latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&distance=10&distanceunit=KM&maxresults=20&compact=true&verbose=false&key=f225c6bc-b5c3-40bd-aa06-70d1048acc29`
+        );
+        const results = response.data.map((place) => ({
+          id: place.ID,
+          nome: place.AddressInfo.Title,
+          endereco: place.AddressInfo.AddressLine1,
+          latitude: place.AddressInfo.Latitude,
+          longitude: place.AddressInfo.Longitude,
+        }));
+        setStations(results);
+      } catch (error) {
+        console.log("Erro ao buscar estações:", error);
+      }
+    };
+    fetchStations();
+  }, [userLocation]);
 
   return (
     <SafeAreaView
@@ -132,71 +139,212 @@ export default function CarregamentoScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{ flex: 1 }}>
-        {/* Cartão de Estações de Carregamento */}
-        <View style={[styles.card, { backgroundColor: palette.card }]}>
-          <View style={styles.cardHeader}>
-            <Ionicons name="flash-outline" size={22} color={palette.primary} />
-            <Text style={[styles.sectionTitle, { color: palette.text }]}>
-              Estações de Carregamento
-            </Text>
-          </View>
-          <Text style={styles.cardSubtext}>
-            Estações próximas da sua localização
-          </Text>
-          <View style={styles.mapPlaceholder}>
-            <MaterialIcons name="navigation" size={40} color="#b0bec5" />
-          </View>
-        </View>
-
-        {/* Renderização dinâmica das estações */}
-        {stations.map((station) => (
-          <View
-            key={station.id}
-            style={[styles.stationCard, { backgroundColor: palette.card }]}
-          >
-            <View style={styles.stationHeader}>
-              <Text style={styles.stationTitle}>
-                {station.nome}
-                {station.destaque && (
-                  <Text style={{ color: "#fbc02d" }}> ★</Text>
-                )}
-              </Text>
-              <View style={styles.stationStatus}>
-                <Text
-                  style={
-                    station.status === "available"
-                      ? styles.stationStatusAvailable
-                      : station.status === "low"
-                      ? styles.stationStatusAvailableLow
-                      : styles.stationStatusOccupied
-                  }
-                >
-                  {station.disponiveis}
-                </Text>
-              </View>
-              <Text style={styles.stationRating}>{station.rating}</Text>
-            </View>
-            <Text style={styles.stationAddress}>{station.endereco}</Text>
-            <Text style={styles.stationDetails}>{station.detalhes}</Text>
-            <View style={styles.stationActions}>
-              <TouchableOpacity style={styles.detailsButton}>
-                <Text style={styles.detailsButtonText}>Detalhes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navigateButton}>
-                <Text style={styles.navigateButtonText}>Navegar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-
-        <TouchableOpacity
-          style={styles.moreStationsButton}
-          onPress={() => setShowMap(true)}
+      {showMap ? (
+        <View
+          style={{
+            flex: 1,
+            margin: 12,
+            borderRadius: 12,
+            overflow: "hidden",
+          }}
         >
-          <Text style={styles.moreStationsText}>Ver Mais Estações</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          {userLocation ? (
+            <MapView
+              style={{ flex: 1, minHeight: 350, borderRadius: 12 }}
+              initialRegion={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+                latitudeDelta: 0.08,
+                longitudeDelta: 0.08,
+              }}
+              provider="google"
+            >
+              {/* Marcador do utilizador */}
+              <Marker
+                coordinate={userLocation}
+                title="Você está aqui"
+                pinColor="#388e3c"
+              />
+              {/* Marcadores das estações */}
+              {stations.map((station) => (
+                <Marker
+                  key={station.id}
+                  coordinate={{
+                    latitude: station.latitude,
+                    longitude: station.longitude,
+                  }}
+                >
+                  <Callout
+                    tooltip={false}
+                    onPress={() =>
+                      navigation.navigate("Rotas", { destino: station.nome })
+                    }
+                  >
+                    <View
+                      style={{
+                        minWidth: 240,
+                        maxWidth: 300,
+                        padding: 14,
+                        backgroundColor: "#fff",
+                        borderRadius: 12,
+                        elevation: 4,
+                        shadowColor: "#000",
+                        shadowOpacity: 0.12,
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowRadius: 6,
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          marginBottom: 8,
+                          fontSize: 17,
+                          color: "#222",
+                        }}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                      >
+                        {station.nome}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#388e3c",
+                          marginBottom: 10,
+                          fontSize: 14,
+                          fontWeight: "600",
+                        }}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                      >
+                        {station.endereco}
+                      </Text>
+                      <View
+                        style={{
+                          backgroundColor: "#388e3c",
+                          borderRadius: 8,
+                          paddingVertical: 10,
+                          paddingHorizontal: 24,
+                          alignItems: "center",
+                          alignSelf: "stretch",
+                          marginTop: 6,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontWeight: "bold",
+                            fontSize: 15,
+                            textAlign: "center",
+                          }}
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                        >
+                          Ir para Rotas
+                        </Text>
+                      </View>
+                      <Text style={{ color: "#888", fontSize: 12, marginTop: 8 }}>
+                        Toque no balão para navegar
+                      </Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              ))}
+            </MapView>
+          ) : (
+            <Text style={{ color: "#388e3c", fontSize: 16, marginTop: 40 }}>
+              A obter localização...
+            </Text>
+          )}
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 20,
+              backgroundColor: "#fff",
+              borderRadius: 20,
+              padding: 10,
+              elevation: 3,
+            }}
+            onPress={() => setShowMap(false)}
+          >
+            <Ionicons name="close" size={24} color="#2e7d32" />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView style={{ flex: 1 }}>
+          {/* Cartão de Estações de Carregamento */}
+          <View style={[styles.card, { backgroundColor: palette.card }]}>
+            <View style={styles.cardHeader}>
+              <Ionicons
+                name="flash-outline"
+                size={22}
+                color={palette.primary}
+              />
+              <Text style={[styles.sectionTitle, { color: palette.text }]}>
+                Estações de Carregamento
+              </Text>
+            </View>
+            <Text style={styles.cardSubtext}>
+              Estações próximas da sua localização
+            </Text>
+            <View style={styles.mapPlaceholder}>
+              <MaterialIcons name="navigation" size={40} color="#b0bec5" />
+            </View>
+          </View>
+
+          {/* Renderização dinâmica das estações */}
+          {stations.map((station) => (
+            <View
+              key={station.id}
+              style={[styles.stationCard, { backgroundColor: palette.card }]}
+            >
+              <View style={styles.stationHeader}>
+                <Text style={styles.stationTitle}>
+                  {station.nome}
+                  {station.destaque && (
+                    <Text style={{ color: "#fbc02d" }}> ★</Text>
+                  )}
+                </Text>
+                <View style={styles.stationStatus}>
+                  <Text
+                    style={
+                      station.status === "available"
+                        ? styles.stationStatusAvailable
+                        : station.status === "low"
+                        ? styles.stationStatusAvailableLow
+                        : styles.stationStatusOccupied
+                    }
+                  >
+                    {station.disponiveis}
+                  </Text>
+                </View>
+                <Text style={styles.stationRating}>{station.rating}</Text>
+              </View>
+              <Text style={styles.stationAddress}>{station.endereco}</Text>
+              <Text style={styles.stationDetails}>{station.detalhes}</Text>
+              <View style={styles.stationActions}>
+                <TouchableOpacity style={styles.detailsButton}>
+                  <Text style={styles.detailsButtonText}>Detalhes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.navigateButton}
+                  onPress={() => navigation.navigate("Rotas", { destino: station.nome })}
+                >
+                  <Text style={styles.navigateButtonText}>Navegar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))}
+
+          <TouchableOpacity
+            style={styles.moreStationsButton}
+            onPress={() => setShowMap(true)}
+          >
+            <Text style={styles.moreStationsText}>Ver Mais Estações</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
