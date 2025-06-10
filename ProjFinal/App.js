@@ -21,78 +21,83 @@ import RotasScreen from "./screens/RotasScreen";
 import DetalhesRotaScreen from "./screens/DetalhesRotaScreen";
 import NavegacaoScreen from "./screens/NavegacaoScreen";
 import NavegacaoGPSScreen from "./screens/NavegacaoGPSScreen";
+import AccessibilityScreen from "./screens/AccessibilityScreen";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={({ navigation }) => ({
-          headerTintColor: "#fff",
-          headerStyle: { backgroundColor: "#2e7d32" },
-          headerBackVisible: false, // <-- remove o botão de voltar
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.replace("Login")}
-              style={{ marginRight: 16 }}
-            >
-              <Ionicons name="exit-outline" size={24} color="#fff" />
-            </TouchableOpacity>
-          ),
-        })}
-      >
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            title: "Agenda A-MoVeR",
-            headerBackVisible: false, // opcional, já herdado
-            headerRight: () => null,
-          }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{
-            title: "Criar Conta",
-            headerBackVisible: false,
-            headerRight: () => null, // oculta o botão de sair
-          }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: "Início" }}
-        />
-        <Stack.Screen name="Bateria" component={BateriaScreen} />
-        <Stack.Screen name="Localização" component={LocalizacaoScreen} />
-        <Stack.Screen name="Manutenção" component={ManutencaoScreen} />
-        <Stack.Screen name="Histórico" component={HistoricoScreen} />
-        <Stack.Screen name="Diagnóstico" component={DiagnosticoScreen} />
-        <Stack.Screen name="Carregamento" component={CarregamentoScreen} />
-        <Stack.Screen name="Controlo" component={ControloScreen} />
-        <Stack.Screen name="Definições" component={DefinicoesScreen} />
-        <Stack.Screen name="Rotas" component={RotasScreen} />
-        <Stack.Screen
-          name="DetalhesRota"
-          component={DetalhesRotaScreen}
-          options={{ title: "Detalhes da Rota" }}
-        />
-        <Stack.Screen
-          name="NavegacaoGPS"
-          component={NavegacaoGPSScreen}
-          options={{
-            title: "Navegação GPS",
-            headerShown: false, // Ocultamos o cabeçalho para ter a experiência de tela cheia
-          }}
-        />
-        <Stack.Screen name="Clima" component={ClimaScreen} />
-        <Stack.Screen name="Análise" component={AnaliseScreen} />
-        <Stack.Screen name="Comunidade" component={ComunidadeScreen} />
-        <Stack.Screen name="Navegação" component={NavegacaoScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={({ navigation }) => ({
+            headerTintColor: "#fff",
+            headerStyle: { backgroundColor: "#2e7d32" },
+            headerBackVisible: false, // <-- remove o botão de voltar
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => navigation.replace("Login")}
+                style={{ marginRight: 16 }}
+              >
+                <Ionicons name="exit-outline" size={24} color="#fff" />
+              </TouchableOpacity>
+            ),
+          })}
+        >
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              title: "Agenda A-MoVeR",
+              headerBackVisible: false, // opcional, já herdado
+              headerRight: () => null,
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              title: "Criar Conta",
+              headerBackVisible: false,
+              headerRight: () => null, // oculta o botão de sair
+            }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: "Início" }}
+          />
+          <Stack.Screen name="Bateria" component={BateriaScreen} />
+          <Stack.Screen name="Localização" component={LocalizacaoScreen} />
+          <Stack.Screen name="Manutenção" component={ManutencaoScreen} />
+          <Stack.Screen name="Histórico" component={HistoricoScreen} />
+          <Stack.Screen name="Diagnóstico" component={DiagnosticoScreen} />
+          <Stack.Screen name="Carregamento" component={CarregamentoScreen} />
+          <Stack.Screen name="Controlo" component={ControloScreen} />
+          <Stack.Screen name="Definições" component={DefinicoesScreen} />
+          <Stack.Screen name="Rotas" component={RotasScreen} />
+          <Stack.Screen
+            name="DetalhesRota"
+            component={DetalhesRotaScreen}
+            options={{ title: "Detalhes da Rota" }}
+          />
+          <Stack.Screen
+            name="NavegacaoGPS"
+            component={NavegacaoGPSScreen}
+            options={{
+              title: "Navegação GPS",
+              headerShown: false, // Ocultamos o cabeçalho para ter a experiência de tela cheia
+            }}
+          />
+          <Stack.Screen name="Clima" component={ClimaScreen} />
+          <Stack.Screen name="Análise" component={AnaliseScreen} />
+          <Stack.Screen name="Comunidade" component={ComunidadeScreen} />
+          <Stack.Screen name="Navegação" component={NavegacaoScreen} />
+          <Stack.Screen name="Acessibilidade" component={AccessibilityScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }

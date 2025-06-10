@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Modal,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeContext";
@@ -30,6 +31,8 @@ export default function CarregamentoScreen({ navigation }) {
   const [stations, setStations] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [selectedStation, setSelectedStation] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -243,7 +246,9 @@ export default function CarregamentoScreen({ navigation }) {
                           Ir para Rotas
                         </Text>
                       </View>
-                      <Text style={{ color: "#888", fontSize: 12, marginTop: 8 }}>
+                      <Text
+                        style={{ color: "#888", fontSize: 12, marginTop: 8 }}
+                      >
                         Toque no balão para navegar
                       </Text>
                     </View>
@@ -324,12 +329,20 @@ export default function CarregamentoScreen({ navigation }) {
               <Text style={styles.stationAddress}>{station.endereco}</Text>
               <Text style={styles.stationDetails}>{station.detalhes}</Text>
               <View style={styles.stationActions}>
-                <TouchableOpacity style={styles.detailsButton}>
+                <TouchableOpacity
+                  style={styles.detailsButton}
+                  onPress={() => {
+                    setSelectedStation(station);
+                    setShowDetails(true);
+                  }}
+                >
                   <Text style={styles.detailsButtonText}>Detalhes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.navigateButton}
-                  onPress={() => navigation.navigate("Rotas", { destino: station.nome })}
+                  onPress={() =>
+                    navigation.navigate("Rotas", { destino: station.nome })
+                  }
                 >
                   <Text style={styles.navigateButtonText}>Navegar</Text>
                 </TouchableOpacity>
@@ -343,6 +356,65 @@ export default function CarregamentoScreen({ navigation }) {
           >
             <Text style={styles.moreStationsText}>Ver Mais Estações</Text>
           </TouchableOpacity>
+
+          {/* Modal de Detalhes da Estação */}
+          <Modal
+            visible={showDetails}
+            transparent
+            animationType="slide"
+            onRequestClose={() => setShowDetails(false)}
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "rgba(0,0,0,0.4)",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 14,
+                  padding: 24,
+                  minWidth: 280,
+                  maxWidth: 340,
+                  elevation: 5,
+                  alignItems: "flex-start",
+                }}
+              >
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 18, marginBottom: 8 }}
+                >
+                  {selectedStation?.nome}
+                </Text>
+                <Text style={{ color: "#388e3c", marginBottom: 8 }}>
+                  {selectedStation?.endereco}
+                </Text>
+                <Text style={{ color: "#666", marginBottom: 8 }}>
+                  Latitude: {selectedStation?.latitude}
+                </Text>
+                <Text style={{ color: "#666", marginBottom: 8 }}>
+                  Longitude: {selectedStation?.longitude}
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    marginTop: 12,
+                    backgroundColor: "#388e3c",
+                    borderRadius: 8,
+                    paddingVertical: 8,
+                    paddingHorizontal: 20,
+                  }}
+                  onPress={() => setShowDetails(false)}
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    Fechar
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </ScrollView>
       )}
     </SafeAreaView>

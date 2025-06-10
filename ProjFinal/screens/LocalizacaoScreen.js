@@ -14,6 +14,8 @@ import { useTheme } from "../context/ThemeContext"; // Caminho atualizado
 import { Platform } from "react-native";
 
 export default function ComunidadeScreen({ navigation }) {
+  const { palette } = useTheme();
+
   const menuItems = [
     { name: "Início", icon: "home-outline", route: "Home" },
     { name: "Bateria", icon: "battery-charging-outline", route: "Bateria" },

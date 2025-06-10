@@ -11,6 +11,7 @@ import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function ComunidadeScreen({ navigation }) {
   const [idioma, setIdioma] = useState("PT");
+  const { palette } = useTheme();
 
   const menuItems = [
     { name: "Início", icon: "home-outline", route: "Home" },

@@ -5,6 +5,8 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function DefinicoeScreen({ navigation }) {
+  const { palette } = useTheme();
+  
   const menuItems = [
     { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
     { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },

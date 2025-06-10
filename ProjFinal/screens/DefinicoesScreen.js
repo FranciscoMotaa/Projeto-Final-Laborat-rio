@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import { useTheme } from '../context/ThemeContext' // Caminho atualizado
+import { useTheme } from '../context/ThemeContext'; // Certifique-se deste import!
 
 export default function DefinicoesScreen({ navigation }) {
+  const { palette } = useTheme();
   const [motor, setMotor] = useState(75);
   const [regen, setRegen] = useState(60);
   const [acel, setAcel] = useState(50);
@@ -54,20 +55,78 @@ export default function DefinicoesScreen({ navigation }) {
 
         {/* Submenu */}
         <View style={styles.submenuContainer}>
-          <TouchableOpacity style={styles.submenuButton}>
-            <Ionicons name="settings-outline" size={20} color="#2e7d32" />
-            <Text style={styles.submenuLabelActive}>Ajustes</Text>
+          <TouchableOpacity
+            style={[
+              styles.submenuButton,
+              /* Ativo se estiver nesta página */
+              navigation.getState().routes[navigation.getState().index].name === "Definições" && styles.submenuButtonActive,
+            ]}
+            onPress={() => navigation.navigate("Definições")}
+          >
+            <Ionicons name="settings-outline" size={20}
+              color={
+                navigation.getState().routes[navigation.getState().index].name === "Definições"
+                  ? palette.primary
+                  : "#888"
+              }
+            />
+            <Text
+              style={
+                navigation.getState().routes[navigation.getState().index].name === "Definições"
+                  ? styles.submenuLabelActive
+                  : styles.submenuLabel
+              }
+            >
+              Ajustes
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.submenuButton}
-          onPress={() => navigation.navigate('Acessibilidade')}>
-            <Ionicons name="accessibility-outline" size={20} color="#888" />
-            <Text style={styles.submenuLabel}>Acessibilidade</Text>
-
+          <TouchableOpacity
+            style={[
+              styles.submenuButton,
+              navigation.getState().routes[navigation.getState().index].name === "Acessibilidade" && styles.submenuButtonActive,
+            ]}
+            onPress={() => navigation.navigate("Acessibilidade")}
+          >
+            <Ionicons name="accessibility-outline" size={20}
+              color={
+                navigation.getState().routes[navigation.getState().index].name === "Acessibilidade"
+                  ? palette.primary
+                  : "#888"
+              }
+            />
+            <Text
+              style={
+                navigation.getState().routes[navigation.getState().index].name === "Acessibilidade"
+                  ? styles.submenuLabelActive
+                  : styles.submenuLabel
+              }
+            >
+              Acessibilidade
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.submenuButton}
-          onPress={() => navigation.navigate('Idioma')}>
-            <Ionicons name="language-outline" size={20} color="#888" />
-            <Text style={styles.submenuLabel}>Idioma</Text>
+          <TouchableOpacity
+            style={[
+              styles.submenuButton,
+              navigation.getState().routes[navigation.getState().index].name === "Idioma" && styles.submenuButtonActive,
+            ]}
+            onPress={() => navigation.navigate("Idioma")}
+          >
+            <Ionicons name="language-outline" size={20}
+              color={
+                navigation.getState().routes[navigation.getState().index].name === "Idioma"
+                  ? palette.primary
+                  : "#888"
+              }
+            />
+            <Text
+              style={
+                navigation.getState().routes[navigation.getState().index].name === "Idioma"
+                  ? styles.submenuLabelActive
+                  : styles.submenuLabel
+              }
+            >
+              Idioma
+            </Text>
           </TouchableOpacity>
         </View>
 

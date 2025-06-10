@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { buscarRota, simularRota } from '../services/routeService';
+import { useTheme } from '@react-navigation/native';
 
 export default function DetalhesRotaScreen({ route, navigation }) {
   const { origem, destino } = route.params;
   const [loading, setLoading] = useState(true);
   const [rotaInfo, setRotaInfo] = useState(null);
   const [erro, setErro] = useState(null);
+  const { palette } = useTheme();
   
   useEffect(() => {
     carregarDadosRota();

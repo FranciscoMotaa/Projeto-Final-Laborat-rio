@@ -13,6 +13,7 @@ import {
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 
 export default function NavegacaoGPSScreen({ route, navigation }) {
   const { rotaInfo, origem, destino } = route.params;
@@ -25,6 +26,7 @@ export default function NavegacaoGPSScreen({ route, navigation }) {
   const [tempoRestante, setTempoRestante] = useState(null);
   const [proximaInstrucao, setProximaInstrucao] = useState(null);
   const [indexInstrucao, setIndexInstrucao] = useState(0);
+  const { palette } = useTheme();
   // Inicializar a navegação e solicitar permissões
   useEffect(() => {
     iniciarNavegacao();

@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, ActivityIndicat
 import { Ionicons } from '@expo/vector-icons'
 import axios from 'axios'
 import * as Location from 'expo-location'
+import { useTheme } from '@react-navigation/native';
 
 export default function ClimaScreen({ navigation }) {
   // Estado para armazenar os dados do clima
@@ -114,6 +115,7 @@ export default function ClimaScreen({ navigation }) {
     { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
     { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
   ]
+  const { palette } = useTheme();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>

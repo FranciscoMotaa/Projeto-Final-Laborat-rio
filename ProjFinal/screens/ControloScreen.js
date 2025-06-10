@@ -9,6 +9,8 @@ export default function ControloScreen({ navigation }) {
   const [alarmeAtivo, setAlarmeAtivo] = useState(true);
   const [motaBloqueada, setMotaBloqueada] = useState(true);
   
+  const { palette } = useTheme();
+
   const menuItems = [
     { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
     { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },

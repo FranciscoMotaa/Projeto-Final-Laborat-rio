@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import { useTheme } from "../context/ThemeContext"; // já está correto
+import { useTheme } from "../context/ThemeContext";
 
 export default function AccessibilityScreen({ navigation }) {
-  const { cor, setCor, palette } = useTheme(); // usa o contexto global
+  const { menuDisplay, setMenuDisplay, palette, theme, setTheme } = useTheme();
 
   const menuItems = [
     { name: "Início", icon: "home-outline", route: "Home" },
@@ -26,13 +26,12 @@ export default function AccessibilityScreen({ navigation }) {
   ];
 
   // Estados para acessibilidade
-  const [menu, setMenu] = useState("icones_texto");
-  const [tema, setTema] = useState("claro");
   const [tamanho, setTamanho] = useState(100);
   const [feedbackSonoro, setFeedbackSonoro] = useState(false);
   const [feedbackTat, setFeedbackTat] = useState(true);
   const [reduzirAnim, setReduzirAnim] = useState(false);
   const [leitorTela, setLeitorTela] = useState(false);
+  const [cor, setCor] = useState("padrao");
 
   return (
     <SafeAreaView
@@ -48,16 +47,14 @@ export default function AccessibilityScreen({ navigation }) {
                 style={[styles.cell, { backgroundColor: palette.card }]}
                 onPress={() => navigation.navigate(item.route)}
               >
-                {/* Só mostra ícone se NÃO for "Apenas Texto" */}
-                {menu !== "texto" && (
+                {menuDisplay !== "texto" && (
                   <Ionicons
                     name={item.icon}
                     size={32}
                     color={palette.primary}
                   />
                 )}
-                {/* Só mostra texto se NÃO for "Apenas Ícones" */}
-                {menu !== "icones" && (
+                {menuDisplay !== "icones" && (
                   <Text style={[styles.label, { color: palette.primary }]}>
                     {item.name}
                   </Text>
@@ -112,17 +109,17 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.radioButton,
-                menu === "icones_texto" && styles.radioButtonActive,
+                menuDisplay === "icones_texto" && styles.radioButtonActive,
               ]}
-              onPress={() => setMenu("icones_texto")}
+              onPress={() => setMenuDisplay("icones_texto")}
             >
               <MaterialCommunityIcons
                 name="format-list-bulleted-square"
                 size={20}
-                color={menu === "icones_texto" ? "#2e7d32" : "#888"}
+                color={menuDisplay === "icones_texto" ? "#2e7d32" : "#888"}
               />
               <Text style={styles.radioText}>Ícones e Texto</Text>
-              {menu === "icones_texto" && (
+              {menuDisplay === "icones_texto" && (
                 <Ionicons
                   name="checkmark-circle"
                   size={18}
@@ -134,17 +131,17 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.radioButton,
-                menu === "icones" && styles.radioButtonActive,
+                menuDisplay === "icones" && styles.radioButtonActive,
               ]}
-              onPress={() => setMenu("icones")}
+              onPress={() => setMenuDisplay("icones")}
             >
               <Ionicons
                 name="apps-outline"
                 size={20}
-                color={menu === "icones" ? "#2e7d32" : "#888"}
+                color={menuDisplay === "icones" ? "#2e7d32" : "#888"}
               />
               <Text style={styles.radioText}>Apenas Ícones</Text>
-              {menu === "icones" && (
+              {menuDisplay === "icones" && (
                 <Ionicons
                   name="checkmark-circle"
                   size={18}
@@ -156,17 +153,17 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.radioButton,
-                menu === "texto" && styles.radioButtonActive,
+                menuDisplay === "texto" && styles.radioButtonActive,
               ]}
-              onPress={() => setMenu("texto")}
+              onPress={() => setMenuDisplay("texto")}
             >
               <Ionicons
                 name="text-outline"
                 size={20}
-                color={menu === "texto" ? "#2e7d32" : "#888"}
+                color={menuDisplay === "texto" ? "#2e7d32" : "#888"}
               />
               <Text style={styles.radioText}>Apenas Texto</Text>
-              {menu === "texto" && (
+              {menuDisplay === "texto" && (
                 <Ionicons
                   name="checkmark-circle"
                   size={18}
@@ -183,19 +180,19 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.themeButton,
-                tema === "claro" && styles.themeButtonActive,
+                theme === "claro" && styles.themeButtonActive,
               ]}
-              onPress={() => setTema("claro")}
+              onPress={() => setTheme("claro")}
             >
               <Ionicons
                 name="sunny-outline"
                 size={18}
-                color={tema === "claro" ? "#fff" : "#2e7d32"}
+                color={theme === "claro" ? "#fff" : "#2e7d32"}
               />
               <Text
                 style={[
                   styles.themeText,
-                  tema === "claro" && { color: "#fff" },
+                  theme === "claro" && { color: "#fff" },
                 ]}
               >
                 Claro
@@ -204,19 +201,19 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.themeButton,
-                tema === "escuro" && styles.themeButtonActive,
+                theme === "escuro" && styles.themeButtonActive,
               ]}
-              onPress={() => setTema("escuro")}
+              onPress={() => setTheme("escuro")}
             >
               <Ionicons
                 name="moon-outline"
                 size={18}
-                color={tema === "escuro" ? "#fff" : "#2e7d32"}
+                color={theme === "escuro" ? "#fff" : "#2e7d32"}
               />
               <Text
                 style={[
                   styles.themeText,
-                  tema === "escuro" && { color: "#fff" },
+                  theme === "escuro" && { color: "#fff" },
                 ]}
               >
                 Escuro
@@ -225,19 +222,19 @@ export default function AccessibilityScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.themeButton,
-                tema === "sistema" && styles.themeButtonActive,
+                theme === "sistema" && styles.themeButtonActive,
               ]}
-              onPress={() => setTema("sistema")}
+              onPress={() => setTheme("sistema")}
             >
               <Ionicons
                 name="phone-portrait-outline"
                 size={18}
-                color={tema === "sistema" ? "#fff" : "#2e7d32"}
+                color={theme === "sistema" ? "#fff" : "#2e7d32"}
               />
               <Text
                 style={[
                   styles.themeText,
-                  tema === "sistema" && { color: "#fff" },
+                  theme === "sistema" && { color: "#fff" },
                 ]}
               >
                 Sistema
@@ -498,10 +495,10 @@ const styles = StyleSheet.create({
   },
   radioText: {
     marginLeft: 8,
-    color: "#222",
     fontSize: 15,
     flex: 1,
   },
+  flex: 1,
   row: {
     flexDirection: "row",
     gap: 8,

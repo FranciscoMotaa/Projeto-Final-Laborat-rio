@@ -3,6 +3,8 @@ import { SafeAreaView, ActivityIndicator } from 'react-native'
 import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function NavegacaoScreen({ navigation }) {
+  const { palette } = useTheme();
+
   useEffect(() => {
     navigation.replace('Localização')
   }, [])
