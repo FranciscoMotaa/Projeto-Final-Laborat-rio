@@ -11,7 +11,7 @@ import { useTheme } from '../context/ThemeContext' // Caminho atualizado
 
 export default function ComunidadeScreen({ navigation }) {
   const [idioma, setIdioma] = useState("PT");
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
 
   const menuItems = [
     { name: "Início", icon: "home-outline", route: "Home" },
@@ -34,15 +34,20 @@ export default function ComunidadeScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       {/* Menu principal */}
       <View style={styles.menuContainer}>
-        <View style={styles.grid}>
-          {menuItems.map((item) => (
+        <View style={styles.grid}>          {menuItems.map((item) => (
             <TouchableOpacity
               key={item.name}
-              style={styles.cell}
+              style={[styles.cell, { backgroundColor: palette.card }]}
               onPress={() => navigation.navigate(item.route)}
             >
-              <Ionicons name={item.icon} size={32} color="#2e7d32" />
-              <Text style={styles.label}>{item.name}</Text>
+              {menuDisplay !== "texto" && (
+                <Ionicons name={item.icon} size={32} color={palette.primary} />
+              )}
+              {menuDisplay !== "icones" && (
+                <Text style={[styles.label, { color: palette.primary }]}>
+                  {item.name}
+                </Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>

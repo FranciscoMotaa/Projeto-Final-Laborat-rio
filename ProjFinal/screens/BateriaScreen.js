@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeContext";
 
 export default function BateriaScreen({ navigation }) {
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
 
   const menuItems = [
     { name: "Início", icon: "home-outline", route: "Home" },
@@ -31,16 +31,19 @@ export default function BateriaScreen({ navigation }) {
       {/* Menu de opções */}
       <View style={[styles.menuContainer, { backgroundColor: palette.card }]}>
         <View style={styles.grid}>
-          {menuItems.map((item) => (
-            <TouchableOpacity
+          {menuItems.map((item) => (            <TouchableOpacity
               key={item.name}
               style={[styles.cell, { backgroundColor: palette.card }]}
               onPress={() => navigation.navigate(item.route)}
             >
-              <Ionicons name={item.icon} size={32} color={palette.primary} />
-              <Text style={[styles.label, { color: palette.primary }]}>
-                {item.name}
-              </Text>
+              {menuDisplay !== "texto" && (
+                <Ionicons name={item.icon} size={32} color={palette.primary} />
+              )}
+              {menuDisplay !== "icones" && (
+                <Text style={[styles.label, { color: palette.primary }]}>
+                  {item.name}
+                </Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>

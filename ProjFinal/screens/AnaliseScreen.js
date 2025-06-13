@@ -15,8 +15,7 @@ import { Share } from "react-native";
 import { WebView } from "react-native-webview";
 
 export default function AnaliseScreen({ navigation }) {
-  const { palette } = useTheme();
-  const { menuDisplay, setMenuDisplay } = useTheme();
+  const { palette, menuDisplay } = useTheme();
   const [pdfUri, setPdfUri] = useState(null);
 
   const menuItems = [

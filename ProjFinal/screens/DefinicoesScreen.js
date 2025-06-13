@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from '../context/ThemeContext'; // Certifique-se deste import!
 
 export default function DefinicoesScreen({ navigation }) {
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
   const [motor, setMotor] = useState(75);
   const [regen, setRegen] = useState(60);
   const [acel, setAcel] = useState(50);
@@ -35,18 +35,27 @@ export default function DefinicoesScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-        {/* Menu de ícones */}
+      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>        {/* Menu de ícones */}
         <View style={styles.menuContainer}>
           <View style={styles.grid}>
             {menuItems.map((item) => (
               <TouchableOpacity
                 key={item.name}
-                style={styles.cell}
+                style={[styles.cell, { backgroundColor: palette.card }]}
                 onPress={() => navigation.navigate(item.route)}
               >
-                <Ionicons name={item.icon} size={32} color="#2e7d32" />
-                <Text style={styles.label}>{item.name}</Text>
+                {menuDisplay !== "texto" && (
+                  <Ionicons
+                    name={item.icon}
+                    size={32}
+                    color={palette.primary}
+                  />
+                )}
+                {menuDisplay !== "icones" && (
+                  <Text style={[styles.label, { color: palette.primary }]}>
+                    {item.name}
+                  </Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>

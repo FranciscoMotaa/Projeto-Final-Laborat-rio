@@ -98,14 +98,13 @@ export default function ClimaScreen({ navigation }) {
     setRefreshing(true);
     getLocation();
   };
-
   // Função para converter valores de timestamp para hora local
   const formatTime = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Menu de navegação
+  // Menu de navegação  
   const menuItems = [
     { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
     { name: 'Bateria',     icon: 'battery-charging-outline', route: 'Bateria' },
@@ -114,23 +113,32 @@ export default function ClimaScreen({ navigation }) {
     { name: 'Manutenção',  icon: 'construct-outline', route: 'Manutenção' },
     { name: 'Comunidade',  icon: 'people-outline', route: 'Comunidade' },
     { name: 'Definições',     icon: 'settings-outline', route: 'Definições' },
-  ]
-  const { palette } = useTheme();
+  ];  const theme = useTheme();
+  const { palette, menuDisplay } = theme || { 
+    palette: { card: "#fff", primary: "#2e7d32" }, 
+    menuDisplay: "icones_texto" 
+  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Menu superior */}
         
         <View style={styles.menuContainer}>
-          <View style={styles.grid}>
-          {menuItems.map(item => (
+          <View style={styles.grid}>          {menuItems.map(item => (
             <TouchableOpacity
               key={item.name}
-              style={styles.cell}
+              style={[styles.cell, { backgroundColor: palette?.card || "#fff" }]}
               onPress={() => navigation.navigate(item.route)}
             >
-              <Ionicons name={item.icon} size={32} color="#2e7d32" />
-              <Text style={styles.label}>{item.name}</Text>
+              {menuDisplay !== "texto" && (
+                <Ionicons name={item.icon} size={32} color={palette?.primary || "#2e7d32"} />
+              )}
+              {menuDisplay !== "icones" && (
+                <Text style={[styles.label, { color: palette?.primary || "#2e7d32" }]}>
+                  {item.name}
+                </Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>

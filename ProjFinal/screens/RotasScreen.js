@@ -21,7 +21,7 @@ import { buscarRota, buscarSugestoesLocais } from "../services/routeService";
 import { useTheme } from "../context/ThemeContext";
 
 export default function RotasScreen({ navigation, route }) {
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
   const [origem, setOrigem] = useState("");
   const [destino, setDestino] = useState(route?.params?.destino || ""); // <-- aqui
   const [carregando, setCarregando] = useState(false);
@@ -233,15 +233,20 @@ export default function RotasScreen({ navigation, route }) {
           >
             {/* container branco atrás dos botões */}
             <View style={styles.menuContainer}>
-              <View style={styles.grid}>
-                {menuItems.map((item) => (
+              <View style={styles.grid}>                {menuItems.map((item) => (
                   <TouchableOpacity
                     key={item.name}
-                    style={styles.cell}
+                    style={[styles.cell, { backgroundColor: palette.card }]}
                     onPress={() => navigation.navigate(item.route)}
                   >
-                    <Ionicons name={item.icon} size={32} color="#2e7d32" />
-                    <Text style={styles.label}>{item.name}</Text>
+                    {menuDisplay !== "texto" && (
+                      <Ionicons name={item.icon} size={32} color={palette.primary} />
+                    )}
+                    {menuDisplay !== "icones" && (
+                      <Text style={[styles.label, { color: palette.primary }]}>
+                        {item.name}
+                      </Text>
+                    )}
                   </TouchableOpacity>
                 ))}
               </View>

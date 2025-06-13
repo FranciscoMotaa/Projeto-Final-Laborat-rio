@@ -23,7 +23,7 @@ export default function ControloScreen({ navigation }) {
     Sport: { motor: 100, regen: 40, acel: 90 }
   };
   
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
 
   const menuItems = [
     { name: 'Início',      icon: 'home-outline' ,           route: 'Home' },
@@ -51,14 +51,19 @@ export default function ControloScreen({ navigation }) {
         {/* Fundo branco para os botões do menu */}
       <View style={styles.menuContainer}>
         <View style={styles.grid}>
-          {menuItems.map(item => (
-            <TouchableOpacity
+          {menuItems.map(item => (            <TouchableOpacity
               key={item.name}
-              style={styles.cell}
+              style={[styles.cell, { backgroundColor: palette.card }]}
               onPress={() => navigation.navigate(item.route)}
             >
-              <Ionicons name={item.icon} size={32} color="#2e7d32" />
-              <Text style={styles.label}>{item.name}</Text>
+              {menuDisplay !== "texto" && (
+                <Ionicons name={item.icon} size={32} color={palette.primary} />
+              )}
+              {menuDisplay !== "icones" && (
+                <Text style={[styles.label, { color: palette.primary }]}>
+                  {item.name}
+                </Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>

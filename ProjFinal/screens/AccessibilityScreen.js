@@ -197,8 +197,7 @@ export default function AccessibilityScreen({ navigation }) {
               >
                 Claro
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableOpacity>            <TouchableOpacity
               style={[
                 styles.themeButton,
                 theme === "escuro" && styles.themeButtonActive,
@@ -219,38 +218,12 @@ export default function AccessibilityScreen({ navigation }) {
                 Escuro
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.themeButton,
-                theme === "sistema" && styles.themeButtonActive,
-              ]}
-              onPress={() => setTheme("sistema")}
-            >
-              <Ionicons
-                name="phone-portrait-outline"
-                size={18}
-                color={theme === "sistema" ? "#fff" : "#2e7d32"}
-              />
-              <Text
-                style={[
-                  styles.themeText,
-                  theme === "sistema" && { color: "#fff" },
-                ]}
-              >
-                Sistema
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Modo de Cor */}
+          </View>{/* Modo de Cor */}
           <Text style={styles.sectionTitle}>Modo de Cor</Text>
           <View style={styles.rowWrap}>
             {[
               { key: "padrao", label: "Padrão" },
               { key: "contraste", label: "Alto Contraste" },
-              { key: "protano", label: "Protanopia" },
-              { key: "deutero", label: "Deuteranopia" },
-              { key: "tritano", label: "Tritanopia" },
             ].map((opt) => (
               <TouchableOpacity
                 key={opt.key}
@@ -273,9 +246,7 @@ export default function AccessibilityScreen({ navigation }) {
                 </Text>
               </TouchableOpacity>
             ))}
-          </View>
-
-          {/* Tamanho do Texto */}
+          </View>          {/* Tamanho do Texto */}
           <Text style={styles.sectionTitle}>Tamanho do Texto</Text>
           <View style={styles.sliderRow}>
             <Text style={{ color: "#888" }}>A</Text>
@@ -296,66 +267,6 @@ export default function AccessibilityScreen({ navigation }) {
             >
               {tamanho}%
             </Text>
-          </View>
-
-          {/* Feedback Adicional */}
-          <Text style={styles.sectionTitle}>Feedback Adicional</Text>
-          <View style={styles.switchRow}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons
-                name="volume-high-outline"
-                size={18}
-                color="#888"
-                style={{ marginRight: 6 }}
-              />
-              <Text style={styles.switchLabel}>Feedback Sonoro</Text>
-            </View>
-            <Switch
-              value={feedbackSonoro}
-              onValueChange={setFeedbackSonoro}
-              trackColor={{ true: "#2e7d32" }}
-              thumbColor={feedbackSonoro ? "#2e7d32" : "#f4f3f4"}
-            />
-          </View>
-          <View style={styles.switchRow}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons
-                name="phone-vibrate-outline"
-                size={18}
-                color="#888"
-                style={{ marginRight: 6 }}
-              />
-              <Text style={styles.switchLabel}>Feedback Tátil</Text>
-            </View>
-            <Switch
-              value={feedbackTat}
-              onValueChange={setFeedbackTat}
-              trackColor={{ true: "#2e7d32" }}
-              thumbColor={feedbackTat ? "#2e7d32" : "#f4f3f4"}
-            />
-          </View>
-
-          {/* Outras Opções */}
-          <Text style={styles.sectionTitle}>Outras Opções</Text>
-          <View style={styles.switchRow}>
-            <Text style={styles.switchLabel}>Reduzir Animações</Text>
-            <Switch
-              value={reduzirAnim}
-              onValueChange={setReduzirAnim}
-              trackColor={{ true: "#2e7d32" }}
-              thumbColor={reduzirAnim ? "#2e7d32" : "#f4f3f4"}
-            />
-          </View>
-          <View style={styles.switchRow}>
-            <Text style={styles.switchLabel}>
-              Otimizado para Leitor de Tela
-            </Text>
-            <Switch
-              value={leitorTela}
-              onValueChange={setLeitorTela}
-              trackColor={{ true: "#2e7d32" }}
-              thumbColor={leitorTela ? "#2e7d32" : "#f4f3f4"}
-            />
           </View>
         </View>
       </ScrollView>

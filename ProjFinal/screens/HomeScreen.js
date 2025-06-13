@@ -13,7 +13,7 @@ import { useTheme } from "../context/ThemeContext";
 import axios from "axios"; // se ainda não estiver importado
 
 export default function HomeScreen({ navigation }) {
-  const { palette } = useTheme();
+  const { palette, menuDisplay } = useTheme();
 
   // Estado para localização e clima
   const [localizacao, setLocalizacao] = useState("A obter localização...");
@@ -106,8 +106,7 @@ export default function HomeScreen({ navigation }) {
         {/* Menu principal */}
         <View style={[styles.menuContainer, { backgroundColor: palette.card }]}>
           <View style={styles.grid}>
-            {menuItems.map((item) => (
-              <TouchableOpacity
+            {menuItems.map((item) => (              <TouchableOpacity
                 key={item.name}
                 style={[
                   styles.cell,
@@ -116,10 +115,14 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => navigation.navigate(item.route)}
                 activeOpacity={0.7}
               >
-                <Ionicons name={item.icon} size={32} color={palette.primary} />
-                <Text style={[styles.label, { color: palette.primary }]}>
-                  {item.name}
-                </Text>
+                {menuDisplay !== "texto" && (
+                  <Ionicons name={item.icon} size={32} color={palette.primary} />
+                )}
+                {menuDisplay !== "icones" && (
+                  <Text style={[styles.label, { color: palette.primary }]}>
+                    {item.name}
+                  </Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>
