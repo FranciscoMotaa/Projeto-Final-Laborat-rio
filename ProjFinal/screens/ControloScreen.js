@@ -2,12 +2,26 @@ import React, { useState } from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Switch, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '../context/ThemeContext' // Caminho atualizado
+import Slider from "@react-native-community/slider";
 
 export default function ControloScreen({ navigation }) {
   const [luzesAtivas, setLuzesAtivas] = useState(false);
   const [rastreamentoAtivo, setRastreamentoAtivo] = useState(true);
   const [alarmeAtivo, setAlarmeAtivo] = useState(true);
   const [motaBloqueada, setMotaBloqueada] = useState(true);
+  const [modo, setModo] = useState("Eco");
+  const modos = ["Eco", "Normal", "Sport"];
+  const [motor, setMotor] = useState(60);
+  const [regen, setRegen] = useState(80);
+  const [acel, setAcel] = useState(40);
+  const [dropdownAberto, setDropdownAberto] = useState(false);
+  
+  // Valores predefinidos para cada modo
+  const modoConfig = {
+    Eco: { motor: 60, regen: 80, acel: 40 },
+    Normal: { motor: 75, regen: 60, acel: 60 },
+    Sport: { motor: 100, regen: 40, acel: 90 }
+  };
   
   const { palette } = useTheme();
 
@@ -141,6 +155,164 @@ export default function ControloScreen({ navigation }) {
               : "Ative o rastreamento para poder localizar a sua mota"}
           </Text>
         </View>
+      </View>
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="settings-outline" size={20} color="#2e7d32" />
+          <Text style={styles.cardTitle}>Ajustes</Text>
+        </View>        {/* Dropdown com seleção */}        <View>
+          <Text style={styles.modeLabel}>Modo de Condução</Text>
+          <TouchableOpacity 
+            style={[
+              styles.dropdown,
+              { borderColor: modo === "Eco" ? "#4caf50" : modo === "Normal" ? "#28662a" : "#0e470f" }
+            ]} 
+            onPress={() => setDropdownAberto(!dropdownAberto)}
+          >
+            <View style={styles.modeIconContainer}>
+              <Ionicons 
+                name={
+                  modo === "Eco" ? "leaf-outline" : 
+                  modo === "Normal" ? "speedometer-outline" : "flash-outline"
+                } 
+                size={18} 
+                color={
+                  modo === "Eco" ? "#4caf50" : 
+                  modo === "Normal" ? "#28662a" : "#0e470f"
+                } 
+              />
+              <Text 
+                style={[
+                  styles.dropdownText,
+                  { 
+                    color: modo === "Eco" ? "#4caf50" : 
+                           modo === "Normal" ? "#28662a" : "#0e470f",
+                    fontWeight: "bold"
+                  }
+                ]}
+              >{modo}</Text>
+            </View>
+            <Ionicons 
+              name={dropdownAberto ? "chevron-up-outline" : "chevron-down-outline"} 
+              size={18} 
+              color="#888" 
+            />
+          </TouchableOpacity>
+          
+          {dropdownAberto && (
+            <View style={styles.dropdownOptions}>
+              {modos.map((modoOpcao) => (
+                <TouchableOpacity
+                  key={modoOpcao}
+                  style={[
+                    styles.dropdownOption, 
+                    modo === modoOpcao && styles.dropdownOptionSelected
+                  ]}                  onPress={() => {
+                    // Atualiza o modo e fecha o dropdown
+                    setModo(modoOpcao);
+                    setDropdownAberto(false);
+                    
+                    // Atualiza os valores dos sliders de acordo com o modo selecionado
+                    const config = modoConfig[modoOpcao];
+                    setMotor(config.motor);
+                    setRegen(config.regen);
+                    setAcel(config.acel);
+                  }}
+                >
+                  <Text style={[
+                    styles.dropdownOptionText,
+                    modo === modoOpcao && styles.dropdownOptionTextSelected
+                  ]}>
+                    {modoOpcao}
+                  </Text>
+                  {modo === modoOpcao && (
+                    <Ionicons name="checkmark" size={16} color="#2e7d32" />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+        {/* Sliders */}        <View style={styles.sliderRow}>
+          <Text style={styles.sliderLabel}>Potência do Motor</Text>
+          <Text style={[
+            styles.sliderValue, 
+            { 
+              color: modo === "Eco" ? "#4caf50" : 
+                    modo === "Normal" ? "#28662a" : "#0e470f"
+            }
+          ]}>{motor}%</Text>
+        </View><Slider
+          style={{ width: "100%" }}
+          minimumValue={0}
+          maximumValue={100}
+          value={motor}
+          minimumTrackTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          maximumTrackTintColor="#e0e0e0"
+          thumbTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          onValueChange={value => setMotor(Math.round(value))}
+        />        <View style={styles.sliderRow}>
+          <Text style={styles.sliderLabel}>Regeneração de Travagem</Text>
+          <Text style={[
+            styles.sliderValue, 
+            { 
+              color: modo === "Eco" ? "#4caf50" : 
+                    modo === "Normal" ? "#28662a" : "#0e470f"
+            }
+          ]}>{regen}%</Text>
+        </View><Slider
+          style={{ width: "100%" }}
+          minimumValue={0}
+          maximumValue={100}
+          value={regen}
+          minimumTrackTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          maximumTrackTintColor="#e0e0e0"
+          thumbTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          onValueChange={value => setRegen(Math.round(value))}
+        />        <View style={styles.sliderRow}>
+          <Text style={styles.sliderLabel}>Resposta do Acelerador</Text>
+          <Text style={[
+            styles.sliderValue, 
+            { 
+              color: modo === "Eco" ? "#4caf50" : 
+                    modo === "Normal" ? "#28662a" : "#0e470f"
+            }
+          ]}>{acel}%</Text>
+        </View><Slider
+          style={{ width: "100%" }}
+          minimumValue={0}
+          maximumValue={100}
+          value={acel}
+          minimumTrackTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          maximumTrackTintColor="#e0e0e0"
+          thumbTintColor={
+            modo === "Eco" ? "#4caf50" : 
+            modo === "Normal" ? "#28662a" : "#0e470f"
+          }
+          onValueChange={value => setAcel(Math.round(value))}
+        />        <TouchableOpacity style={[
+          styles.saveButton,
+          {
+            backgroundColor: "#2e7d32",
+          }
+        ]}>
+          <Text style={styles.saveButtonText}>Guardar Configurações</Text>
+        </TouchableOpacity>
       </View>
       </ScrollView>
     </SafeAreaView>
@@ -316,5 +488,115 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     textAlign: 'center'
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    padding: 18,
+    marginHorizontal: 12,
+    marginTop: 16,
+    marginBottom: 0,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#222",
+    marginLeft: 8,
+  },
+  dropdown: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 16,
+    marginTop: 2,
+    justifyContent: "space-between",
+  },  modeLabel: {
+    fontSize: 15,
+    color: "#555",
+    marginBottom: 6,
+    fontWeight: "600",
+  },
+  modeIconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dropdownText: {
+    fontSize: 15,
+    color: "#222",
+    marginLeft: 6,
+  },
+  dropdownOptions: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    marginTop: 4,
+    zIndex: 10,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#f0f0f0",
+  },
+  dropdownOptionSelected: {
+    backgroundColor: "#f5f5f5",
+  },
+  dropdownOptionText: {
+    fontSize: 15,
+    color: "#222",
+  },
+  dropdownOptionTextSelected: {
+    color: "#2e7d32",
+    fontWeight: "bold",
+  },
+  sliderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  sliderLabel: {
+    color: "#222",
+    fontSize: 15,
+  },  sliderValue: {
+    fontWeight: "bold",
+    fontSize: 15,
+  },  saveButton: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 18,
+  },
+  saveButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   }
 })

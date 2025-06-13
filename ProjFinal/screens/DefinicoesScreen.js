@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Slider from "@react-native-community/slider";
 import { useTheme } from '../context/ThemeContext'; // Certifique-se deste import!
 
 export default function DefinicoesScreen({ navigation }) {
@@ -129,66 +128,6 @@ export default function DefinicoesScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* Cartão Ajustes */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Ionicons name="settings-outline" size={20} color="#2e7d32" />
-            <Text style={styles.cardTitle}>Ajustes</Text>
-          </View>
-          {/* Dropdown fake */}
-          <TouchableOpacity style={styles.dropdown}>
-            <Text style={styles.dropdownText}>{modo}</Text>
-            <Ionicons name="chevron-down-outline" size={18} color="#888" />
-          </TouchableOpacity>
-          {/* Sliders */}
-          <View style={styles.sliderRow}>
-            <Text style={styles.sliderLabel}>Potência do Motor</Text>
-            <Text style={styles.sliderValue}>{motor}%</Text>
-          </View>
-          <Slider
-            style={{ width: "100%" }}
-            minimumValue={0}
-            maximumValue={100}
-            value={motor}
-            minimumTrackTintColor="#2e7d32"
-            maximumTrackTintColor="#e0e0e0"
-            thumbTintColor="#2e7d32"
-            onValueChange={value => setMotor(Math.round(value))}
-          />
-          <View style={styles.sliderRow}>
-            <Text style={styles.sliderLabel}>Regeneração de Travagem</Text>
-            <Text style={styles.sliderValue}>{regen}%</Text>
-          </View>
-          <Slider
-            style={{ width: "100%" }}
-            minimumValue={0}
-            maximumValue={100}
-            value={regen}
-            minimumTrackTintColor="#2e7d32"
-            maximumTrackTintColor="#e0e0e0"
-            thumbTintColor="#2e7d32"
-            onValueChange={value => setRegen(Math.round(value))}
-          />
-          <View style={styles.sliderRow}>
-            <Text style={styles.sliderLabel}>Resposta do Acelerador</Text>
-            <Text style={styles.sliderValue}>{acel}%</Text>
-          </View>
-          <Slider
-            style={{ width: "100%" }}
-            minimumValue={0}
-            maximumValue={100}
-            value={acel}
-            minimumTrackTintColor="#2e7d32"
-            maximumTrackTintColor="#e0e0e0"
-            thumbTintColor="#2e7d32"
-            onValueChange={value => setAcel(Math.round(value))}
-          />
-          <TouchableOpacity style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Guardar Configurações</Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Cartão Segurança */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>

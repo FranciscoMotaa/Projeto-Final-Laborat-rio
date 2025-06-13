@@ -27,6 +27,7 @@ export default function BateriaScreen({ navigation }) {
     <SafeAreaView
       style={[styles.container, { backgroundColor: palette.background }]}
     >
+    <ScrollView style={{ flex: 1 }}>
       {/* Menu de opções */}
       <View style={[styles.menuContainer, { backgroundColor: palette.card }]}>
         <View style={styles.grid}>
@@ -91,7 +92,7 @@ export default function BateriaScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{ flex: 1 }}>
+      
         {/* Estado da Bateria */}
         <View style={[styles.card, { backgroundColor: palette.card }]}>
           <View style={styles.cardHeader}>
